@@ -1,0 +1,567 @@
+/* 增强版侧边栏样式 - 优化流畅度 */
+.sidebar {
+    width: 256px;
+    background: linear-gradient(180deg, 
+        rgba(17, 24, 39, 0.95) 0%, 
+        rgba(31, 41, 55, 0.95) 50%, 
+        rgba(17, 24, 39, 0.95) 100%
+    );
+    border-right: 1px solid rgba(59, 130, 246, 0.2);
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 30px rgba(38, 87, 253, 0.1);
+    /* 硬件加速优化 */
+    transform: translateZ(0);
+    will-change: width, transform;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 收缩状态 - 优化过渡 */
+.sidebar.collapsed {
+    width: 88px;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 文本元素收缩优化 - 保持图标可见 */
+.sidebar.collapsed .sidebar-logo-text,
+.sidebar.collapsed .nav-text,
+.sidebar.collapsed .sidebar-user-info {
+    opacity: 0;
+    transform: translateX(-15px) scale(0.8);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    pointer-events: none;
+    visibility: hidden;
+}
+
+/* 正常状态的文本元素 */
+.sidebar:not(.collapsed) .sidebar-logo-text,
+.sidebar:not(.collapsed) .nav-text,
+.sidebar:not(.collapsed) .sidebar-user-info {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    visibility: visible;
+}
+
+/* 收缩状态下的导航链接优化 */
+.sidebar.collapsed .nav-link {
+    justify-content: center;
+    padding: 18px 12px;
+    margin: 6px 8px;
+    border-radius: 16px;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(59, 130, 246, 0.1);
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+}
+
+/* 收缩状态下的图标样式 */
+.sidebar.collapsed .nav-icon {
+    transform: scale(1.4) translateZ(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: rgba(255, 255, 255, 0.9);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+/* 收缩状态下的悬停效果 */
+.sidebar.collapsed .nav-link:hover {
+    background: rgba(38, 87, 253, 0.2);
+    border-color: rgba(38, 87, 253, 0.4);
+    transform: scale(1.08) translateZ(0);
+    box-shadow: 0 8px 25px rgba(38, 87, 253, 0.4);
+}
+
+.sidebar.collapsed .nav-link:hover .nav-icon {
+    color: #ffffff;
+    transform: scale(1.5) translateZ(0);
+    text-shadow: 0 0 10px rgba(38, 87, 253, 0.6);
+}
+
+/* 收缩状态下的活跃状态 */
+.sidebar.collapsed .nav-link.active {
+    background: linear-gradient(135deg, 
+        rgba(38, 87, 253, 0.4), 
+        rgba(59, 130, 246, 0.3)
+    );
+    border-color: rgba(38, 87, 253, 0.6);
+    box-shadow: 0 10px 30px rgba(38, 87, 253, 0.5);
+}
+
+.sidebar.collapsed .nav-link.active .nav-icon {
+    color: #ffffff;
+    transform: scale(1.45) translateZ(0);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+}
+
+/* Header 收缩优化 */
+.sidebar.collapsed .sidebar-header {
+    padding: 24px 16px;
+    transition: padding 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar.collapsed .sidebar-logo-icon {
+    transform: scale(1.2) translateZ(0);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 6px 20px rgba(38, 87, 253, 0.4);
+}
+
+/* Footer 收缩优化 */
+.sidebar.collapsed .sidebar-footer {
+    padding: 20px 16px;
+    transition: padding 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar.collapsed .sidebar-footer .flex {
+    justify-content: center;
+}
+
+.sidebar.collapsed #logoutBtn {
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+/* 收缩按钮样式优化 */
+#sidebarToggle {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #2657FD, #3B82F6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 6px 16px rgba(38, 87, 253, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform, box-shadow;
+    /* 固定定位 - 始终相对于视口，跟随侧边栏移动 */
+    position: fixed;
+    left: calc(256px - 12px); /* 正常状态：侧边栏宽度256px减去按钮一半 */
+    top: 50%;
+    transform: translateY(-50%) translateZ(0);
+    z-index: 1001;
+    /* 增加点击区域 */
+    padding: 2px;
+    /* 确保始终可见 */
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* 收缩状态下的按钮位置调整 */
+.sidebar.collapsed #sidebarToggle {
+    left: calc(88px - 12px); /* 收缩状态：收缩宽度88px减去按钮一半 */
+    transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* 移动端时隐藏收缩按钮 */
+@media (max-width: 1024px) {
+    #sidebarToggle {
+        display: none;
+    }
+}
+
+#sidebarToggle:hover {
+    background: linear-gradient(135deg, #1D4ED8, #2563EB);
+    transform: translateY(-50%) scale(1.15) translateZ(0);
+    box-shadow: 0 8px 24px rgba(38, 87, 253, 0.6);
+}
+
+#sidebarToggle:active {
+    transform: translateY(-50%) scale(1.0) translateZ(0);
+}
+
+.sidebar.collapsed #sidebarToggle i {
+    transform: rotate(180deg);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar:not(.collapsed) #sidebarToggle i {
+    transform: rotate(0deg);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Logo区域增强 */
+.sidebar-header {
+    position: relative;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar-logo-icon {
+    background: linear-gradient(135deg, #2657FD, #3B82F6, #1E40AF);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(38, 87, 253, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.sidebar-logo-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: rotate(45deg);
+    animation: logoShine 4s infinite;
+}
+
+@keyframes logoShine {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+}
+
+.sidebar-logo-text {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar-logo-text h1 {
+    background: linear-gradient(135deg, #ffffff, #e5e7eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+/* 导航菜单增强 */
+.nav-link {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    backdrop-filter: blur(10px);
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform, background-color, border-color;
+    /* 确保点击区域完整 */
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(38, 87, 253, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.nav-link:hover::before {
+    left: 100%;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background: rgba(38, 87, 253, 0.1);
+    border-color: rgba(38, 87, 253, 0.3);
+    transform: translateX(4px) translateZ(0);
+    box-shadow: 0 4px 12px rgba(38, 87, 253, 0.2);
+}
+
+.nav-link.active {
+    color: #ffffff;
+    background: linear-gradient(135deg, 
+        rgba(38, 87, 253, 0.2), 
+        rgba(59, 130, 246, 0.15)
+    );
+    border-color: rgba(38, 87, 253, 0.4);
+    box-shadow: 0 4px 20px rgba(38, 87, 253, 0.3);
+}
+
+.nav-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(180deg, #2657FD, #3B82F6);
+    border-radius: 0 4px 4px 0;
+    transform: scaleY(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-link.active .nav-indicator {
+    transform: scaleY(1);
+}
+
+.nav-link:hover .nav-indicator {
+    transform: scaleY(1);
+}
+
+.nav-icon {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 20px;
+    text-align: center;
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: transform;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.1) rotate(5deg) translateZ(0);
+    color: #2657FD;
+}
+
+.nav-text {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-weight: 500;
+    margin-left: 12px;
+}
+
+/* 用户信息区域增强 */
+.sidebar-footer {
+    background: linear-gradient(135deg, 
+        rgba(31, 41, 55, 0.8), 
+        rgba(17, 24, 39, 0.9)
+    );
+    border-top: 1px solid rgba(59, 130, 246, 0.2);
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(38, 87, 253, 0.5), 
+        transparent
+    );
+}
+
+.sidebar-user-info {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    #sidebarOverlay {
+        display: block !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    #sidebarOverlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* 主内容区域调整 - 优化过渡 */
+#mainContainer {
+    margin-left: 256px;
+    transition: margin-left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* 硬件加速 */
+    transform: translateZ(0);
+    will-change: margin-left;
+}
+
+.sidebar.collapsed ~ #mainContainer {
+    margin-left: 88px;
+}
+
+@media (max-width: 1024px) {
+    #mainContainer {
+        margin-left: 0;
+        transition: none;
+    }
+}
+
+/* 动画增强 */
+.nav-item {
+    animation: slideInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    animation-fill-mode: both;
+}
+
+.nav-item:nth-child(1) { animation-delay: 0.05s; }
+.nav-item:nth-child(2) { animation-delay: 0.1s; }
+.nav-item:nth-child(3) { animation-delay: 0.15s; }
+.nav-item:nth-child(4) { animation-delay: 0.2s; }
+.nav-item:nth-child(5) { animation-delay: 0.25s; }
+.nav-item:nth-child(6) { animation-delay: 0.3s; }
+.nav-item:nth-child(7) { animation-delay: 0.35s; }
+.nav-item:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px) translateZ(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) translateZ(0);
+    }
+}
+
+/* 滚动条样式 */
+.sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(31, 41, 55, 0.3);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(38, 87, 253, 0.5);
+    border-radius: 2px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(38, 87, 253, 0.7);
+}
+
+/* 工具提示样式（收缩状态时显示） */
+.nav-tooltip {
+    position: fixed;
+    left: 96px;
+    background: linear-gradient(135deg, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95));
+    color: white;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-50%) translateX(-5px) translateZ(0);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(38, 87, 253, 0.4);
+    backdrop-filter: blur(15px);
+    z-index: 1001;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(38, 87, 253, 0.2);
+    pointer-events: none;
+    /* 硬件加速 */
+    will-change: transform, opacity;
+}
+
+.nav-tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(-50%) translateX(0) translateZ(0);
+}
+
+.nav-tooltip::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 8px solid transparent;
+    border-right-color: rgba(17, 24, 39, 0.95);
+}
+
+/* 新增特效 */
+.sidebar-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(38, 87, 253, 0.8), 
+        transparent
+    );
+    animation: glow-flow 3s infinite;
+}
+
+@keyframes glow-flow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* 悬浮效果增强 */
+.sidebar-logo-icon:hover {
+    transform: scale(1.05) rotate(5deg) translateZ(0);
+    box-shadow: 0 8px 25px rgba(38, 87, 253, 0.4);
+}
+
+.nav-link:active {
+    transform: translateX(2px) scale(0.98) translateZ(0);
+}
+
+/* 性能优化 */
+.sidebar,
+.sidebar-logo-text,
+.nav-text,
+.sidebar-user-info,
+.nav-link,
+.nav-icon,
+#sidebarToggle {
+    /* 强制硬件加速 */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* 减少动画偏好支持 */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar,
+    #mainContainer,
+    .nav-tooltip,
+    .sidebar-logo-text,
+    .nav-text,
+    .sidebar-user-info,
+    .nav-link,
+    .nav-icon,
+    #sidebarToggle {
+        transition: none !important;
+        animation: none !important;
+    }
+}

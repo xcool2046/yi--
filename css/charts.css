@@ -1,0 +1,332 @@
+/* 图表容器样式 */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-container.large {
+    height: 400px;
+}
+
+.chart-container.small {
+    height: 200px;
+}
+
+/* 图表标题 */
+.chart-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chart-title i {
+    color: #2657FD;
+    margin-right: 8px;
+}
+
+.chart-subtitle {
+    font-size: 0.875rem;
+    color: #9CA3AF;
+    margin-bottom: 20px;
+}
+
+/* 图表选项按钮 */
+.chart-options {
+    display: flex;
+    gap: 8px;
+}
+
+.chart-option-btn {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #9CA3AF;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.chart-option-btn:hover,
+.chart-option-btn.active {
+    background: rgba(38, 87, 253, 0.2);
+    border-color: rgba(38, 87, 253, 0.3);
+    color: #ffffff;
+}
+
+/* 图表加载状态 */
+.chart-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.chart-loading .loading-spinner {
+    width: 32px;
+    height: 32px;
+}
+
+.chart-loading-text {
+    color: #9CA3AF;
+    font-size: 0.875rem;
+}
+
+/* 图表数据为空状态 */
+.chart-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    flex-direction: column;
+    gap: 12px;
+    color: #9CA3AF;
+}
+
+.chart-empty i {
+    font-size: 2rem;
+    color: #4B5563;
+}
+
+.chart-empty-text {
+    font-size: 0.875rem;
+}
+
+/* 图表图例自定义 */
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    color: #9CA3AF;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+/* 统计卡片网格 */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(38, 87, 253, 0.3);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2657FD, #64B5F6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 12px;
+    font-size: 1.25rem;
+    color: #ffffff;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #9CA3AF;
+    margin-bottom: 8px;
+}
+
+.stat-trend {
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+
+.stat-trend.up {
+    color: #10B981;
+}
+
+.stat-trend.down {
+    color: #EF4444;
+}
+
+.stat-trend i {
+    font-size: 0.75rem;
+}
+
+/* 图表工具栏 */
+.chart-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: between;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+.chart-period-selector {
+    display: flex;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 4px;
+    gap: 2px;
+}
+
+.period-btn {
+    padding: 6px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: #9CA3AF;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.period-btn:hover,
+.period-btn.active {
+    background: #2657FD;
+    color: #ffffff;
+}
+
+.chart-export-btn {
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #9CA3AF;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.chart-export-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* 响应式图表 */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 250px;
+        padding: 12px;
+    }
+    
+    .chart-container.large {
+        height: 300px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    
+    .stat-card {
+        padding: 16px;
+    }
+    
+    .stat-value {
+        font-size: 1.5rem;
+    }
+    
+    .chart-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .chart-export-btn {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+}
+
+/* 图表动画 */
+.chart-container canvas {
+    animation: chartFadeIn 0.8s ease-out;
+}
+
+@keyframes chartFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 实时数据指示器 */
+.realtime-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.75rem;
+    color: #10B981;
+    margin-bottom: 12px;
+}
+
+.realtime-dot {
+    width: 6px;
+    height: 6px;
+    background: #10B981;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* 图表比较模式 */
+.chart-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 768px) {
+    .chart-comparison {
+        grid-template-columns: 1fr;
+    }
+} 

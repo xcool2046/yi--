@@ -1,0 +1,229 @@
+/* 基础变量 */
+:root {
+  --primary-color: #3498db;     /* 主品牌色 */
+  --secondary-color: #2980b9;   /* 次级颜色 */
+  --accent-color: #e74c3c;      /* 强调色 */
+  --light-color: #ecf0f1;       /* 浅色背景 */
+  --dark-color: #2c3e50;        /* 深色文本 */
+  --success-color: #27ae60;     /* 成功状态 */
+  --warning-color: #f1c40f;     /* 警告状态 */
+  --danger-color: #e74c3c;      /* 危险状态 */
+  --nav-gradient-start: #2c3e50; /* 导航渐变起始 */
+  --nav-gradient-end: #34495e;   /* 导航渐变结束 */
+  --menu-active-indicator: #3498db; /* 菜单激活指示条 */
+}
+
+/* 基础布局 */
+body {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #f8f9fa;
+  color: var(--dark-color);
+  min-height: 100vh;
+}
+
+/* 统一导航栏样式 */
+.navbar {
+  background: linear-gradient(135deg,
+    var(--nav-gradient-start) 0%,
+    var(--nav-gradient-end) 100%);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  padding: 0.5rem 1rem;
+  position: relative;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-brand i {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+/* 统一侧边栏样式 */
+.sidebar {
+  background: linear-gradient(195deg,
+    #ffffff 0%,
+    #f8f9fa 100%);
+  height: calc(100vh - 56px);
+  box-shadow: 5px 0 25px rgba(52, 152, 219, 0.08);
+  position: sticky;
+  top: 56px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-right: 1px solid rgba(52, 152, 219, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+/* 菜单项动画效果 */
+.sidebar .nav-link {
+  color: var(--dark-color);
+  border-radius: 8px;
+  margin: 6px 12px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+.sidebar .nav-link::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 0;
+  background: var(--menu-active-indicator);
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background: rgba(52, 152, 219, 0.05);
+  color: var(--primary-color);
+  transform: translateX(8px);
+}
+
+.sidebar .nav-link:hover::before,
+.sidebar .nav-link.active::before {
+  height: 60%;
+}
+
+.sidebar .nav-link i {
+  margin-right: 12px;
+  font-size: 1.1rem;
+  min-width: 24px;
+  transition: all 0.3s ease;
+}
+
+/* 卡片通用样式 */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+/* 表单控件 */
+.form-control {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border: 2px solid #dee2e6;
+}
+
+.form-control:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52,152,219,0.1);
+}
+
+/* 响应式处理 */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+    overflow: hidden;
+    border-right: none;
+  }
+
+  .sidebar:hover {
+    width: 280px;
+    box-shadow: 5px 0 30px rgba(52, 152, 219, 0.1);
+  }
+
+  .sidebar .nav-link span {
+    opacity: 0;
+    transition: opacity 0.3s 0.2s;
+  }
+
+  .sidebar:hover .nav-link span {
+    opacity: 1;
+  }
+
+  .navbar-brand span {
+    display: none;
+  }
+}
+
+/* 移动端优化 */
+@media (max-width: 576px) {
+  .navbar {
+    padding: 0.5rem;
+  }
+
+  .navbar-brand i {
+    font-size: 1.2rem;
+  }
+
+  .sidebar {
+    width: 60px;
+  }
+
+  .sidebar:hover {
+    width: 240px;
+  }
+
+  .sidebar .nav-link {
+    padding: 10px 15px;
+    margin: 4px 8px;
+  }
+}
+
+/* 新增下拉菜单样式 */
+.dropdown-menu {
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.05);
+  margin-top: 5px;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  transition: all 0.2s;
+  border-radius: 6px;
+  margin: 2px 4px;
+}
+
+.dropdown-item:hover {
+  background: rgba(52,152,219,0.08);
+}
+
+/* 工具提示增强 */
+.tooltip-inner {
+  background: var(--dark-color);
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9em;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 新增导航栏图标动画 */
+.nav-link i {
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover i {
+  transform: scale(1.1);
+}
+
+/* 用户菜单特殊样式 */
+.navbar .dropdown-toggle::after {
+  display: none;
+}
+
+.navbar .bi-person-circle {
+  font-size: 1.4rem;
+  margin-right: 0.3rem;
+}
