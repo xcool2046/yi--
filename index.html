@@ -188,12 +188,9 @@
                         <i class="fas fa-user text-white relative z-10"></i>
                     </div>
                     <div class="flex-1 sidebar-user-info">
-                        <p class="text-sm font-medium text-white">张医生</p>
-                        <p class="text-xs text-gray-400">主治医师</p>
+                        <p id="currentUserName" class="text-sm font-medium text-white"></p>
+                        <p id="currentUserRole" class="text-xs text-gray-400"></p>
                     </div>
-                    <button id="logoutBtn" class="text-gray-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-gray-600">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </button>
                 </div>
             </div>
         </nav>
@@ -216,14 +213,14 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <!-- 主题切换按钮 -->
-                        <button id="themeToggle" class="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-gray-800">
-                            <i class="fas fa-palette"></i>
+                        <!-- 简化的用户信息 -->
+                        <span id="simpleUserName" class="text-sm text-gray-300 hidden md:block"></span>
+                        
+                        <!-- 登出按钮 -->
+                        <button id="simpleLogoutBtn" class="p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-gray-800" title="退出登录">
+                            <i class="fas fa-sign-out-alt"></i>
                         </button>
                         
-                        <div class="text-sm text-gray-400">
-                            <span id="currentTime"></span>
-                        </div>
                         <button class="relative p-2 text-gray-400 hover:text-white transition-colors rounded-lg hover:bg-gray-800">
                             <i class="fas fa-bell"></i>
                             <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
@@ -239,7 +236,33 @@
         </main>
     </div>
 
+    <!-- 简化的登出确认模态框 -->
+    <div id="logoutModal" class="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-gray-800 rounded-2xl p-8 max-w-md mx-4 text-center">
+                <div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-question text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-2">确认退出</h3>
+                <p class="text-gray-300 mb-6">您确定要退出登录吗？</p>
+                <div class="flex space-x-4">
+                    <button id="cancelLogout" class="flex-1 btn btn-secondary">
+                        取消
+                    </button>
+                    <button id="confirmLogout" class="flex-1 btn btn-primary">
+                        确认退出
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript文件 -->
+    <!-- 认证相关脚本 -->
+    <script src="js/auth.js"></script>
+    <script src="js/validation.js"></script>
+    
+    <!-- 核心功能脚本 -->
     <script src="js/stability.js"></script>
     <script src="js/main.js"></script>
     <script src="js/sidebar.js"></script>
@@ -249,6 +272,8 @@
     <script src="js/sidebarNavigation.js"></script>
     <script src="js/chartSetup.js"></script>
     <script src="js/router.js"></script>
+    
+    <!-- 页面模块脚本 -->
     <script src="js/pages/upload.js"></script>
     <script src="js/pages/analysis.js"></script>
     <script src="js/pages/patients.js"></script>
@@ -256,6 +281,128 @@
     <script src="js/pages/cases.js"></script>
     <script src="js/pages/settings.js"></script>
     <script src="js/pages/help.js"></script>
+    
+    <!-- 应用启动脚本 -->
     <script src="js/app.js"></script>
+    
+    <script>
+        // 页面加载完成后进行登录状态检查
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            checkAuthStatus();
+            
+            // 更新用户信息显示
+            updateUserDisplay();
+            
+            // 绑定事件
+            bindEvents();
+            
+            console.log('🏠 主页已加载完成');
+        });
+        
+        // 检查认证状态
+        function checkAuthStatus() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (!isLoggedIn) {
+                console.log('⚠️ 用户未登录，跳转到登录页面');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            console.log('✅ 用户已登录');
+        }
+        
+        // 更新用户信息显示
+        function updateUserDisplay() {
+            const currentUser = getCurrentUser();
+            
+            if (currentUser) {
+                // 更新顶部简化的用户信息
+                document.getElementById('simpleUserName').textContent = currentUser.name || '用户';
+                
+                // 更新侧边栏用户信息
+                document.getElementById('currentUserName').textContent = currentUser.name || '用户';
+                document.getElementById('currentUserRole').textContent = getRoleDisplayName(currentUser.role) || '';
+            }
+        }
+        
+        // 获取角色显示名称
+        function getRoleDisplayName(role) {
+            const roleMap = {
+                'admin': '系统管理员',
+                'doctor': '医生',
+                'radiologist': '影像科医师',
+                'nurse': '护士',
+                'technician': '技师',
+                'researcher': '研究员',
+                'student': '学生'
+            };
+            return roleMap[role] || role;
+        }
+        
+        // 获取当前用户信息
+        function getCurrentUser() {
+            const userData = localStorage.getItem('currentUser');
+            return userData ? JSON.parse(userData) : null;
+        }
+        
+        // 绑定所有事件
+        function bindEvents() {
+            // 登出按钮事件
+            const simpleLogoutBtn = document.getElementById('simpleLogoutBtn');
+            const logoutModal = document.getElementById('logoutModal');
+            const cancelLogout = document.getElementById('cancelLogout');
+            const confirmLogout = document.getElementById('confirmLogout');
+            
+            if (simpleLogoutBtn) {
+                simpleLogoutBtn.addEventListener('click', showLogoutModal);
+            }
+            
+            if (cancelLogout) {
+                cancelLogout.addEventListener('click', hideLogoutModal);
+            }
+            
+            if (confirmLogout) {
+                confirmLogout.addEventListener('click', performLogout);
+            }
+            
+            // 点击模态框外部关闭
+            if (logoutModal) {
+                logoutModal.addEventListener('click', function(e) {
+                    if (e.target === logoutModal) {
+                        hideLogoutModal();
+                    }
+                });
+            }
+        }
+        
+        // 显示登出确认模态框
+        function showLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+        
+        // 隐藏登出确认模态框
+        function hideLogoutModal() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+        
+        // 执行登出
+        function performLogout() {
+            // 清除登录状态
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('rememberUser');
+            
+            // 直接跳转到登录页面
+            window.location.href = 'login.html';
+        }
+    </script>
 </body>
 </html>
